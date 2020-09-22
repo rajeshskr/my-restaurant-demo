@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Restaurant</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+  <link href="main.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	crossorigin=""/>
+	
+	 <!-- Make sure you put this AFTER Leaflet's CSS -->
+	 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+	 integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+	 crossorigin=""></script>
+
+  <style media="screen">
+    body {
+      background: #ECEFF1;
+      color: rgba(0, 0, 0, 0.87);
+      font-family: Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #message {
+      background: white;
+      max-width: 360px;
+      margin: 100px auto 16px;
+      padding: 32px 24px;
+      border-radius: 3px;
+    }
+
+    #message h2 {
+      color: #ffa100;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 0 0 8px;
+    }
+
+    #message h1 {
+      font-size: 22px;
+      font-weight: 300;
+      color: rgba(0, 0, 0, 0.6);
+      margin: 0 0 16px;
+    }
+
+    #message p {
+      line-height: 140%;
+      margin: 16px 0 24px;
+      font-size: 14px;
+    }
+
+    #message a {
+      display: block;
+      text-align: center;
+      background: #039be5;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: white;
+      padding: 16px;
+      border-radius: 4px;
+    }
+
+    #message,
+    #message a {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    }
+
+    #load {
+      color: rgba(0, 0, 0, 0.4);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+
+      body,
+      #message {
+        margin-top: 0;
+        background: white;
+        box-shadow: none;
+      }
+
+      body {
+        border-top: 16px solid #ffa100;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-for-admin">
+    <!--Main Navigation-->
+    <header>
+
+      <!-- Navbar -->
+      <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+        <div class="container-fluid">
+
+          <!-- Brand -->
+          <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+            <strong class="blue-text">My Restaurant</strong>
+          </a>
+
+          <!-- Collapse -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Links -->
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <!-- Left -->
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link waves-effect" href="#">Home
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              </li>
+            </ul>
+
+            <!-- Right -->
+            <ul class="navbar-nav nav-flex-icons">
+              <li class="nav-item">
+                <a href="https://www.facebook.com/mdbootstrap" class="nav-link waves-effect" target="_blank">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect" target="_blank">
+                  <i class="fab fa-twitter"></i>
+                </a>
+              </li>
+            </ul>
+
+          </div>
+
+        </div>
+      </nav>
+      <!-- Navbar -->
+
+      <!-- Sidebar -->
+      <div class="sidebar-fixed position-fixed">
+
+        <a class="logo-wrapper waves-effect">
+          <img
+            src="https://i2.wp.com/static.free-logo-design.net/uploads/2019/12/Free-coffee-logo-design.jpg?resize=594%2C274"
+            class="img-fluid" alt="">
+        </a>
+
+        <div class="list-group list-group-flush">
+          <a href="#" class="list-group-item active waves-effect">
+            <i class="fa fa-pie-chart mr-3"></i>Dashboard
+          </a>
+        </div>
+
+      </div>
+      <!-- Sidebar -->
+
+    </header>
+    <!--Main Navigation-->
+
+    <!--Main layout-->
+    <main class="pt-5 mx-lg-5">
+      <div class="container-fluid mt-5">
+
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
+
+          <!--Card content-->
+          <div class="card-body d-sm-flex justify-content-between">
+
+            <h4 class="mb-2 mb-sm-0 pt-1">
+              <a href="https://mdbootstrap.com/docs/jquery/" target="_blank">Home Page</a>
+              <span>/</span>
+              <span>Dashboard</span>
+            </h4>
+
+            <form class="d-flex justify-content-center">
+              <!-- Default input -->
+              <input type="search" placeholder="Type your query" aria-label="Search" class="form-control">
+              <button class="btn btn-primary btn-sm my-0 p" type="submit">
+                <i class="fa fa-search"></i>
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+        <!-- Heading -->
+
+        <!-- Grid row-->
+        <div class="row wow fadeIn">
+
+          <!--Grid column-->
+          <div class="col-md-6 mb-4">
+
+            <!--Card-->
+            <div class="card">
+
+              <!--Card content-->
+              <div class="card-body">
+
+                <!-- Table  -->
+                <table class="table table-hover">
+                  <!-- Table head -->
+                  <thead class="blue-grey lighten-4">
+                    <tr>
+                      <th>#</th>
+                      <th>Color</th>
+                      <th>Votes</th>
+                    </tr>
+                  </thead>
+                  <!-- Table head -->
+
+                  <!-- Table body -->
+                  <tbody id="table">
+                  </tbody>
+                  <!-- Table body -->
+                </table>
+                <!-- Table  -->
+
+              </div>
+
+            </div>
+            <!--/.Card-->
+
+          </div>
+          <!--Grid column-->
+
+
+        </div>
+        <!--Grid row-->
+
+
+        <!--Grid row-->
+        <div class="row wow fadeIn">
+
+          <!--Grid column-->
+          <div class="col-md-9 mb-4">
+
+            <!--Card-->
+            <div class="card">
+
+              <!--Card content-->
+              <div class="card-body">
+
+                <canvas id="myChart"></canvas>
+
+              </div>
+
+            </div>
+            <!--/.Card-->
+
+          </div>
+          <!--Grid column-->
+
+
+        </div>
+        <!--Grid row-->
+
+
+        <!--Grid row-->
+        <div class="row wow fadeIn">
+
+          <!--Grid column-->
+          <div class="col-md-6 mb-4">
+
+            <!--Card-->
+            <div class="card">
+
+              <!-- Card header -->
+              <div class="card-header">Google map</div>
+
+              <!--Card content-->
+              <div class="card-body">
+
+                <!--Google map-->
+                <div id="map" class="map-container" style="height: 500px">
+                  <!-- <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    frameborder="0" style="border:0" allowfullscreen></iframe> -->
+                </div>
+
+              </div>
+
+            </div>
+            <!--/.Card-->
+
+          </div>
+          <!--Grid column-->
+
+        </div>
+        <!--Grid row -->
+
+      </div>
+    </main>
+    <!--Main layout-->
+
+    <!--Footer-->
+    <footer class="page-footer text-center font-small primary-color-dark darken-2 mt-4 wow fadeIn">
+
+      <hr class="my-4">
+
+      <!-- Social icons -->
+      <div class="pb-4">
+        <a href="https://www.facebook.com/mdbootstrap" target="_blank">
+          <i class="fab fa-facebook-f mr-3"></i>
+        </a>
+
+        <a href="https://twitter.com/MDBootstrap" target="_blank">
+          <i class="fab fa-twitter mr-3"></i>
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
+          <i class="fab fa-youtube mr-3"></i>
+        </a>
+
+        <a href="https://plus.google.com/u/0/b/107863090883699620484" target="_blank">
+          <i class="fab fa-google-plus mr-3"></i>
+        </a>
+
+        <a href="https://dribbble.com/mdbootstrap" target="_blank">
+          <i class="fab fa-dribbble mr-3"></i>
+        </a>
+
+        <a href="https://pinterest.com/mdbootstrap" target="_blank">
+          <i class="fab fa-pinterest mr-3"></i>
+        </a>
+
+        <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
+          <i class="fab fa-github mr-3"></i>
+        </a>
+
+        <a href="http://codepen.io/mdbootstrap/" target="_blank">
+          <i class="fab fa-codepen mr-3"></i>
+        </a>
+      </div>
+      <!-- Social icons -->
+
+
+    </footer>
+    <!--/.Footer-->
+  </div>
+
+
+  <div id="fb-root"></div>
+	<script>
+	  window.fbAsyncInit = function() {
+		FB.init({
+		  xfbml            : true,
+		  version          : 'v8.0'
+		});
+	  };
+
+	  (function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+
+	<!-- Your Chat Plugin code -->
+	<div class="fb-customerchat"
+	  attribution=setup_tool
+	  page_id="101818484968105">
+	</div>
+  <!-- JQuery -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+  <!-- update the version number as needed -->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-firestore.js"></script>
+  <script id="document-template" type="text/x-handlebars-template">
+    <div>
+        {{#each this}}
+        <tr>
+          <th scope="row">3</th>
+          <td>{{color}}</td>
+          <td>{{votes}}</td>
+          
+        </tr>
+        {{/each}}
+    </div>
+</script>
+  <script src="main.js"></script>
+
+</body>
+
+</html>
